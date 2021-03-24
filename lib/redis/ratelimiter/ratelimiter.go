@@ -2,8 +2,8 @@ package ratelimiter
 
 import (
 	"fmt"
-	"gihub.com/Flyingon/go-common/lib/redis"
-	"gihub.com/Flyingon/go-common/util"
+	"github.com/Flyingon/go-common/lib/redis"
+	"github.com/Flyingon/go-common/util"
 	"github.com/siddontang/go-log/log"
 )
 

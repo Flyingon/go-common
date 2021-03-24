@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"gihub.com/Flyingon/go-common/lib/redis"
-	"gihub.com/Flyingon/go-common/util"
+	"github.com/Flyingon/go-common/lib/redis"
+	"github.com/Flyingon/go-common/util"
 	redigo "github.com/gomodule/redigo/redis"
 	"github.com/siddontang/go-log/log"
 )
