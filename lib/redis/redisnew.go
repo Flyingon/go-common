@@ -71,6 +71,7 @@ type TRedisConf struct {
 	Host     string `yaml:"host" json:"host"`
 	Port     int    `yaml:"port" json:"port"`
 	Password string `yaml:"password" json:"password"`
+	Db       int    `yaml:"db" json:"db"`
 }
 
 // Init redis clt初始化
@@ -79,12 +80,11 @@ func Init(confList map[string]*TRedisConf) {
 	for k, v := range confList {
 		if strings.HasPrefix(k, "redispool") {
 			url := fmt.Sprintf("%s:%d", v.Host, v.Port)
-			redisPool := NewPool(url, v.Password)
+			redisPool := NewPool(url, v.Password, v.Db)
 			SetRedisClt(k, redisPool)
 			log.Infof("redis[%s] init, config: %+v", k, v)
 		}
 	}
-	//redisPool := NewPool(server, password)
 }
 
 func getError(err error) error {
