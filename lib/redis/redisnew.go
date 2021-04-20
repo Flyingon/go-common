@@ -95,12 +95,12 @@ func getError(err error) error {
 }
 
 //支持原生操作,注意使用完要conn.Close()
-func (p Pool) Conn(ctx context.Context) (redis.Conn, error) {
+func (p *Pool) Conn(ctx context.Context) (redis.Conn, error) {
 	return p.redisPool.GetContext(ctx)
 }
 
 //string
-func (p Pool) Set(key string, value string) error {
+func (p *Pool) Set(key string, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -112,7 +112,7 @@ func (p Pool) Set(key string, value string) error {
 	return err
 }
 
-func (p Pool) Del(keys []string) (int, error) {
+func (p *Pool) Del(keys []string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -131,7 +131,7 @@ func (p Pool) Del(keys []string) (int, error) {
 /**
  * 第一个参数为是否设置成功，0失败1成功
  */
-func (p Pool) SetNx(key string, value string) (int, error) {
+func (p *Pool) SetNx(key string, value string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -143,7 +143,7 @@ func (p Pool) SetNx(key string, value string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) SetEx(key string, seconds int, value string) error {
+func (p *Pool) SetEx(key string, seconds int, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -155,7 +155,7 @@ func (p Pool) SetEx(key string, seconds int, value string) error {
 	return err
 }
 
-func (p Pool) PSetEx(key string, milliseconds int, value string) error {
+func (p *Pool) PSetEx(key string, milliseconds int, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -169,7 +169,7 @@ func (p Pool) PSetEx(key string, milliseconds int, value string) error {
 
 //返回OK表示设置成功
 //返回""空字符串表示键名已存在
-func (p Pool) SetPxNx(key string, value string, milliseconds int) (string, error) {
+func (p *Pool) SetPxNx(key string, value string, milliseconds int) (string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -186,7 +186,7 @@ func (p Pool) SetPxNx(key string, value string, milliseconds int) (string, error
 	return rsStr, err
 }
 
-func (p Pool) Get(key string) (value string, err error) {
+func (p *Pool) Get(key string) (value string, err error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -205,7 +205,7 @@ func (p Pool) Get(key string) (value string, err error) {
 	return
 }
 
-func (p Pool) GetSet(key string, value string) (oldValue string, err error) {
+func (p *Pool) GetSet(key string, value string) (oldValue string, err error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -224,7 +224,7 @@ func (p Pool) GetSet(key string, value string) (oldValue string, err error) {
 	return
 }
 
-func (p Pool) Incr(key string) (int, error) {
+func (p *Pool) Incr(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -236,7 +236,7 @@ func (p Pool) Incr(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) IncrBy(key string, increment int) (int, error) {
+func (p *Pool) IncrBy(key string, increment int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -248,7 +248,7 @@ func (p Pool) IncrBy(key string, increment int) (int, error) {
 	return rs, err
 }
 
-func (p Pool) Decr(key string) (int, error) {
+func (p *Pool) Decr(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -260,7 +260,7 @@ func (p Pool) Decr(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) DecrBy(key string, decrement int) (int, error) {
+func (p *Pool) DecrBy(key string, decrement int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -272,7 +272,7 @@ func (p Pool) DecrBy(key string, decrement int) (int, error) {
 	return rs, err
 }
 
-func (p Pool) MSet(keyMapValues map[string]string) error {
+func (p *Pool) MSet(keyMapValues map[string]string) error {
 	if len(keyMapValues) < 1 {
 		return nil
 	}
@@ -293,7 +293,7 @@ func (p Pool) MSet(keyMapValues map[string]string) error {
 	return err
 }
 
-func (p Pool) MGet(keys []string) ([]string, error) {
+func (p *Pool) MGet(keys []string) ([]string, error) {
 	if len(keys) < 1 {
 		return []string{}, nil
 	}
@@ -314,7 +314,7 @@ func (p Pool) MGet(keys []string) ([]string, error) {
 }
 
 //hash
-func (p Pool) HSet(key string, field string, value string) error {
+func (p *Pool) HSet(key string, field string, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -326,7 +326,7 @@ func (p Pool) HSet(key string, field string, value string) error {
 	return err
 }
 
-func (p Pool) HSetNx(key string, field string, value string) (int, error) {
+func (p *Pool) HSetNx(key string, field string, value string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -338,7 +338,7 @@ func (p Pool) HSetNx(key string, field string, value string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) HGet(key string, field string) (string, error) {
+func (p *Pool) HGet(key string, field string) (string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -354,7 +354,7 @@ func (p Pool) HGet(key string, field string) (string, error) {
 	}
 }
 
-func (p Pool) HKeys(key string) ([]string, error) {
+func (p *Pool) HKeys(key string) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -365,7 +365,7 @@ func (p Pool) HKeys(key string) ([]string, error) {
 	return rs, err
 }
 
-func (p Pool) HExists(key string, field string) (bool, error) {
+func (p *Pool) HExists(key string, field string) (bool, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -376,7 +376,7 @@ func (p Pool) HExists(key string, field string) (bool, error) {
 	return rs, err
 }
 
-func (p Pool) HDel(key string, fields []string) error {
+func (p *Pool) HDel(key string, fields []string) error {
 	if len(fields) < 1 {
 		return nil
 	}
@@ -397,7 +397,7 @@ func (p Pool) HDel(key string, fields []string) error {
 	return err
 }
 
-func (p Pool) HLen(key string) (int, error) {
+func (p *Pool) HLen(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -409,7 +409,7 @@ func (p Pool) HLen(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) HIncrBy(key string, field string, increment int) (int, error) {
+func (p *Pool) HIncrBy(key string, field string, increment int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -420,7 +420,7 @@ func (p Pool) HIncrBy(key string, field string, increment int) (int, error) {
 	return rs, err
 }
 
-func (p Pool) HMSet(key string, fieldMapValues map[string]string) error {
+func (p *Pool) HMSet(key string, fieldMapValues map[string]string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -438,7 +438,7 @@ func (p Pool) HMSet(key string, fieldMapValues map[string]string) error {
 	return err
 }
 
-func (p Pool) HMGet(key string, fields []string) (map[string]string, error) {
+func (p *Pool) HMGet(key string, fields []string) (map[string]string, error) {
 	if len(fields) < 1 {
 		return make(map[string]string, 0), nil
 	}
@@ -463,7 +463,7 @@ func (p Pool) HMGet(key string, fields []string) (map[string]string, error) {
 	return rspData, nil
 }
 
-func (p Pool) HGetAll(key string) (map[string]string, error) {
+func (p *Pool) HGetAll(key string) (map[string]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -476,7 +476,7 @@ func (p Pool) HGetAll(key string) (map[string]string, error) {
 }
 
 //list //待实现
-func (p Pool) LPush(key string, value string) (int, error) {
+func (p *Pool) LPush(key string, value string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -488,7 +488,7 @@ func (p Pool) LPush(key string, value string) (int, error) {
 	return rs, nil
 }
 
-func (p Pool) RPush(key string, value string) (int, error) {
+func (p *Pool) RPush(key string, value string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -500,7 +500,7 @@ func (p Pool) RPush(key string, value string) (int, error) {
 	return rs, nil
 }
 
-func (p Pool) LPop(key string) (string, error) {
+func (p *Pool) LPop(key string) (string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -516,7 +516,7 @@ func (p Pool) LPop(key string) (string, error) {
 	}
 }
 
-func (p Pool) RPop(key string) (string, error) {
+func (p *Pool) RPop(key string) (string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -532,7 +532,7 @@ func (p Pool) RPop(key string) (string, error) {
 	}
 }
 
-func (p Pool) LLen(key string) (int, error) {
+func (p *Pool) LLen(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -544,7 +544,7 @@ func (p Pool) LLen(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) LRange(key string, start int, stop int) ([]string, error) {
+func (p *Pool) LRange(key string, start int, stop int) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -557,7 +557,7 @@ func (p Pool) LRange(key string, start int, stop int) ([]string, error) {
 }
 
 //set //待实现
-func (p Pool) SAdd(key string, member string) (int, error) {
+func (p *Pool) SAdd(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -569,7 +569,7 @@ func (p Pool) SAdd(key string, member string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) SMembers(key string) ([]string, error) {
+func (p *Pool) SMembers(key string) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -580,7 +580,7 @@ func (p Pool) SMembers(key string) ([]string, error) {
 	return rs, err
 }
 
-func (p Pool) SIsMember(key string, member string) (int, error) {
+func (p *Pool) SIsMember(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -591,7 +591,7 @@ func (p Pool) SIsMember(key string, member string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) SPop(key string) (string, error) {
+func (p *Pool) SPop(key string) (string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -607,9 +607,9 @@ func (p Pool) SPop(key string) (string, error) {
 	}
 }
 
-func (p Pool) SRandMember() {}
+func (p *Pool) SRandMember() {}
 
-func (p Pool) SRem(key string, member string) (int, error) {
+func (p *Pool) SRem(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -620,7 +620,7 @@ func (p Pool) SRem(key string, member string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) SCard(key string) (int, error) {
+func (p *Pool) SCard(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -632,7 +632,7 @@ func (p Pool) SCard(key string) (int, error) {
 }
 
 //zset
-func (p Pool) ZAdd(key string, score int, member string) (int, error) {
+func (p *Pool) ZAdd(key string, score int, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -644,7 +644,7 @@ func (p Pool) ZAdd(key string, score int, member string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) ZAddMembers(key string, memberScoreInt map[string]int) (int, error) {
+func (p *Pool) ZAddMembers(key string, memberScoreInt map[string]int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -667,7 +667,7 @@ func (p Pool) ZAddMembers(key string, memberScoreInt map[string]int) (int, error
 	return rs, err
 }
 
-func (p Pool) ZScore(key string, member string) (int, error) {
+func (p *Pool) ZScore(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -683,7 +683,7 @@ func (p Pool) ZScore(key string, member string) (int, error) {
 	}
 }
 
-func (p Pool) ZIncrBy(key string, increment int, member string) (int, error) {
+func (p *Pool) ZIncrBy(key string, increment int, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -695,7 +695,7 @@ func (p Pool) ZIncrBy(key string, increment int, member string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) ZCard(key string) (int, error) {
+func (p *Pool) ZCard(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -707,7 +707,7 @@ func (p Pool) ZCard(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) ZCount(key string, min interface{}, max interface{}) (int, error) {
+func (p *Pool) ZCount(key string, min interface{}, max interface{}) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -719,7 +719,7 @@ func (p Pool) ZCount(key string, min interface{}, max interface{}) (int, error) 
 	return rs, err
 }
 
-func (p Pool) ZRange(key string, start int, stop int) ([]string, error) {
+func (p *Pool) ZRange(key string, start int, stop int) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -731,7 +731,7 @@ func (p Pool) ZRange(key string, start int, stop int) ([]string, error) {
 	return rs, err
 }
 
-func (p Pool) ZRangeWithScores(key string, start int, stop int) ([]map[string]string, error) {
+func (p *Pool) ZRangeWithScores(key string, start int, stop int) ([]map[string]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -752,7 +752,7 @@ func (p Pool) ZRangeWithScores(key string, start int, stop int) ([]map[string]st
 	return rspArr, err
 }
 
-func (p Pool) ZRevRange(key string, start int, stop int) ([]string, error) {
+func (p *Pool) ZRevRange(key string, start int, stop int) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -764,7 +764,7 @@ func (p Pool) ZRevRange(key string, start int, stop int) ([]string, error) {
 	return rs, err
 }
 
-func (p Pool) ZRevRangeWithScores(key string, start int, stop int) ([]map[string]string, error) {
+func (p *Pool) ZRevRangeWithScores(key string, start int, stop int) ([]map[string]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -785,7 +785,7 @@ func (p Pool) ZRevRangeWithScores(key string, start int, stop int) ([]map[string
 	return rspArr, err
 }
 
-func (p Pool) ZRangeByScore(key string, min interface{}, max interface{}, limitOffset int, count int) ([]string, error) {
+func (p *Pool) ZRangeByScore(key string, min interface{}, max interface{}, limitOffset int, count int) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -800,7 +800,7 @@ func (p Pool) ZRangeByScore(key string, min interface{}, max interface{}, limitO
 /**
  * 返回数组，每个元素都是map 包含member和value
  */
-func (p Pool) ZRangeByScoreWithScores(key string, min interface{}, max interface{}, limitOffset int, count int) ([]map[string]string, error) {
+func (p *Pool) ZRangeByScoreWithScores(key string, min interface{}, max interface{}, limitOffset int, count int) ([]map[string]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -822,7 +822,7 @@ func (p Pool) ZRangeByScoreWithScores(key string, min interface{}, max interface
 	return rspArr, err
 }
 
-func (p Pool) ZRevRangeByScore(key string, max interface{}, min interface{}, limitOffset int, count int) ([]string, error) {
+func (p *Pool) ZRevRangeByScore(key string, max interface{}, min interface{}, limitOffset int, count int) ([]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -837,7 +837,7 @@ func (p Pool) ZRevRangeByScore(key string, max interface{}, min interface{}, lim
 /**
  * 返回数组，每个元素都是map 包含member和value
  */
-func (p Pool) ZRevRangeByScoreWithScores(key string, max interface{}, min interface{}, limitOffset int, count int) ([]map[string]string, error) {
+func (p *Pool) ZRevRangeByScoreWithScores(key string, max interface{}, min interface{}, limitOffset int, count int) ([]map[string]string, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -859,7 +859,7 @@ func (p Pool) ZRevRangeByScoreWithScores(key string, max interface{}, min interf
 	return rspArr, err
 }
 
-func (p Pool) ZRank(key string, member string) (int, error) {
+func (p *Pool) ZRank(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -871,7 +871,7 @@ func (p Pool) ZRank(key string, member string) (int, error) {
 	}
 }
 
-func (p Pool) ZRevRank(key string, member string) (int, error) {
+func (p *Pool) ZRevRank(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -883,7 +883,7 @@ func (p Pool) ZRevRank(key string, member string) (int, error) {
 	}
 }
 
-func (p Pool) ZRem(key string, member string) (int, error) {
+func (p *Pool) ZRem(key string, member string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -895,7 +895,7 @@ func (p Pool) ZRem(key string, member string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) ZRemMembers(key string, members []string) (int, error) {
+func (p *Pool) ZRemMembers(key string, members []string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -913,7 +913,7 @@ func (p Pool) ZRemMembers(key string, members []string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) ZRemRangeByRank(key string, start int, stop int) (int, error) {
+func (p *Pool) ZRemRangeByRank(key string, start int, stop int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -925,7 +925,7 @@ func (p Pool) ZRemRangeByRank(key string, start int, stop int) (int, error) {
 	return rs, err
 }
 
-func (p Pool) ZRemRangeByScore(key string, min int, max int) (int, error) {
+func (p *Pool) ZRemRangeByScore(key string, min int, max int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -938,7 +938,7 @@ func (p Pool) ZRemRangeByScore(key string, min int, max int) (int, error) {
 }
 
 //ZUNIONSTORE destination numkeys key [key ...]
-func (p Pool) ZUnionStore(destKey string, num int, keys []string) error {
+func (p *Pool) ZUnionStore(destKey string, num int, keys []string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -955,7 +955,7 @@ func (p Pool) ZUnionStore(destKey string, num int, keys []string) error {
 }
 
 //bit
-func (p Pool) SetBit(key string, offset int, value int) error {
+func (p *Pool) SetBit(key string, offset int, value int) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -967,7 +967,7 @@ func (p Pool) SetBit(key string, offset int, value int) error {
 	return err
 }
 
-func (p Pool) GetBit(key string, offset int) (int, error) {
+func (p *Pool) GetBit(key string, offset int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -979,7 +979,7 @@ func (p Pool) GetBit(key string, offset int) (int, error) {
 	return rs, err
 }
 
-func (p Pool) BitCount(key string, start, end int) (int, error) {
+func (p *Pool) BitCount(key string, start, end int) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -992,7 +992,7 @@ func (p Pool) BitCount(key string, start, end int) (int, error) {
 }
 
 //自动过期
-func (p Pool) Expire(key string, seconds int) error {
+func (p *Pool) Expire(key string, seconds int) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1004,7 +1004,7 @@ func (p Pool) Expire(key string, seconds int) error {
 	return err
 }
 
-func (p Pool) ExpireAt(key string, timestamp int) error {
+func (p *Pool) ExpireAt(key string, timestamp int) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1020,7 +1020,7 @@ func (p Pool) ExpireAt(key string, timestamp int) error {
  *返回剩余生存时间
  *当 key 不存在时，返回 -2 。 当 key 存在但没有设置剩余生存时间时，返回 -1 。 否则，以秒为单位，返回 key 的剩余生存时间。
  */
-func (p Pool) Ttl(key string) (int, error) {
+func (p *Pool) Ttl(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1032,7 +1032,7 @@ func (p Pool) Ttl(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) Persist(key string) error {
+func (p *Pool) Persist(key string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1047,7 +1047,7 @@ func (p Pool) Persist(key string) error {
 /**
  *以毫秒为单位
  */
-func (p Pool) PExpire(key string, milliseconds int) error {
+func (p *Pool) PExpire(key string, milliseconds int) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1059,7 +1059,7 @@ func (p Pool) PExpire(key string, milliseconds int) error {
 	return err
 }
 
-func (p Pool) PExpireAt(key string, millisecTimestamp int) error {
+func (p *Pool) PExpireAt(key string, millisecTimestamp int) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1071,7 +1071,7 @@ func (p Pool) PExpireAt(key string, millisecTimestamp int) error {
 	return err
 }
 
-func (p Pool) PTtl(key string) (int, error) {
+func (p *Pool) PTtl(key string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1083,7 +1083,7 @@ func (p Pool) PTtl(key string) (int, error) {
 	return rs, err
 }
 
-func (p Pool) PipeLine(params []map[string]interface{}) ([]interface{}, error) {
+func (p *Pool) PipeLineWithRsp(params []map[string]interface{}) ([]interface{}, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1202,7 +1202,7 @@ func transSliceToKv(strList []string) []map[string]string {
 }
 
 // RENAME
-func (p Pool) RENAME(key1 string, key2 string) error {
+func (p *Pool) RENAME(key1 string, key2 string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1215,7 +1215,7 @@ func (p Pool) RENAME(key1 string, key2 string) error {
 }
 
 // EXISTS
-func (p Pool) EXISTS(key string) (bool, error) {
+func (p *Pool) EXISTS(key string) (bool, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1227,8 +1227,36 @@ func (p Pool) EXISTS(key string) (bool, error) {
 }
 
 // Do
-func (p Pool) Do(cmd string, args ...interface{}) (reply interface{}, err error) {
+func (p *Pool) Do(cmd string, args ...interface{}) (reply interface{}, err error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 	return conn.Do(cmd, args...)
+}
+
+// SingleCmd
+type SingleCmd struct {
+	Cmd  string
+	Args []interface{}
+}
+
+func (p *Pool) PipeLine(cmdList []SingleCmd) (interface{}, error) {
+	conn := p.redisPool.Get()
+	defer conn.Close()
+
+	var err error
+	for _, single := range cmdList {
+		err = conn.Send(single.Cmd, single.Args...)
+		if err != nil {
+			return nil, err
+		}
+	}
+	err = conn.Flush()
+	if err != nil {
+		return nil, err
+	}
+	res, err := conn.Receive()
+	if err != nil {
+		return nil, err
+	}
+	return res, err
 }
