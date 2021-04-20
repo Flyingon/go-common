@@ -11,11 +11,21 @@ import (
 
 const dftTimeOut = 3000 // 毫秒
 
-func NewPool(server, password string, db int) *redis.Pool {
+// NewPool args: {maxIdle} {MaxActive} {IdleTimeout}
+func NewPool(server, password string, db int, args ...int) *redis.Pool {
+	maxIdle := 3000
+	maxActive := 3000
+	idleTimeout := 240
+	log.Infof("maxIdle: %d, MaxActive: %d, idleTimeout: %d", maxIdle, maxActive, idleTimeout)
+	if len(args) >= 3 {
+		maxIdle = args[0]
+		maxActive = args[1]
+		idleTimeout = args[2]
+	}
 	return &redis.Pool{
-		MaxIdle:     3000,
-		MaxActive:   0,
-		IdleTimeout: 240 * time.Second,
+		MaxIdle:     maxIdle,
+		MaxActive:   maxActive,
+		IdleTimeout: time.Duration(idleTimeout) * time.Second,
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp",
 				server,
