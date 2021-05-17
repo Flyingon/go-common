@@ -1237,9 +1237,10 @@ func (p *Pool) Do(cmd string, args ...interface{}) (reply interface{}, err error
 type SingleCmd struct {
 	Cmd  string
 	Args []interface{}
+	Res  interface{}
 }
 
-func (p *Pool) PipeLine(cmdList []SingleCmd) (interface{}, error) {
+func (p *Pool) PipeLine(cmdList []*SingleCmd) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
 
@@ -1247,16 +1248,19 @@ func (p *Pool) PipeLine(cmdList []SingleCmd) (interface{}, error) {
 	for _, single := range cmdList {
 		err = conn.Send(single.Cmd, single.Args...)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
 	err = conn.Flush()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	res, err := conn.Receive()
-	if err != nil {
-		return nil, err
+	for index := range cmdList {
+		res, e := conn.Receive()
+		if e != nil {
+			return e
+		}
+		cmdList[index].Res = res
 	}
-	return res, err
+	return nil
 }
