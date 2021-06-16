@@ -18,3 +18,31 @@ func CheckKeyExist(data map[string]interface{}, keys []string) error {
 	}
 	return nil
 }
+
+// ParamCheck 单个参数检查结构体
+type ParamCheck struct {
+	Condition bool
+	ErrCode   int
+	ErrMsg    string
+}
+
+// ParamsCheck 参数检查
+func ParamsCheck(pcs []*ParamCheck) (int, error) {
+	errCode := 1003
+	errMsg := "参数检查失败"
+	for _, c := range pcs {
+		if c == nil {
+			continue
+		}
+		if c.Condition {
+			if c.ErrCode > 0 {
+				errCode = c.ErrCode
+			}
+			if len(c.ErrMsg) > 0 {
+				errMsg = c.ErrMsg
+			}
+			return errCode, fmt.Errorf(errMsg)
+		}
+	}
+	return 0, nil
+}
