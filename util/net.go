@@ -1,19 +1,19 @@
 package util
 
-import (
-	"net"
-	"strings"
-)
+import "net"
 
-var localIp = ""
-
+// GetLocalIp 获取当前服务器IP
 func GetLocalIP() string {
-	if localIp == "" {
-		conn, err := net.Dial("udp", "www.oa.com:80")
-		if err == nil {
-			localIp = strings.Split(conn.LocalAddr().String(), ":")[0]
-		}
-		defer conn.Close()
+	addrSlice, err := net.InterfaceAddrs()
+	if nil != err {
+		return "localhost"
 	}
-	return localIp
+	for _, addr := range addrSlice {
+		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if nil != ipnet.IP.To4() {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return "localhost"
 }

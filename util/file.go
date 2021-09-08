@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// ReadLines 读文件
 func ReadLines(path string) ([]string, error) {
 	inFile, err := os.Open(path)
 	if err != nil {

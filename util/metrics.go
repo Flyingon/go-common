@@ -1,7 +1,7 @@
 package util
 
 import (
-	"github.com/siddontang/go-log/log"
+	"fmt"
 	"time"
 )
 
@@ -12,11 +12,12 @@ func ReportMonitor(msg string, args ...float64) {
 	if len(args) > 0 {
 		value = args[0]
 	}
-	log.Debugf("report monitor, msg: %s, val: %d", msg, value)
+	fmt.Printf("report monitor, msg: %s, val: %d", msg, value)
 	return
 }
 
 // ReportTimeDuration 耗时上报
+// TODO: 自定义实现
 func ReportTimeDuration(msg string, duration time.Duration) {
-	log.Debugf("report time duration, msg: %s, val: %d ms", msg, duration.Microseconds())
+	fmt.Printf("report time duration, msg: %s, val: %d ms", msg, duration.Microseconds())
 }

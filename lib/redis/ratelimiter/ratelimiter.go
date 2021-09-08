@@ -16,7 +16,7 @@ type RateLimiter struct {
 	LimitInterval int `json:"limit_interval"` // 间隔时间, s
 }
 
-// CheckRate简单频率控制
+// CheckRate 简单频率控制
 func (r *RateLimiter) CheckRate(redisKey, limitKey string) error {
 	if r.LimitNum <= 0 || r.LimitInterval <= 0 {
 		log.Warnf("rate limiter config (%+v) is not valid", r)

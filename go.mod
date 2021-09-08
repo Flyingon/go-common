@@ -10,5 +10,6 @@ require (
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca
 	github.com/shopspring/decimal v1.2.0
 	github.com/siddontang/go-log v0.0.0-20190221022429-1e957dd83bed
+	github.com/stretchr/testify v1.5.1
 	golang.org/x/text v0.3.5
 )
