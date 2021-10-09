@@ -12,7 +12,7 @@ func ReportMonitor(msg string, args ...float64) {
 	if len(args) > 0 {
 		value = args[0]
 	}
-	fmt.Printf("report monitor, msg: %s, val: %d", msg, value)
+	fmt.Printf("report monitor, msg: %s, val: %0.2f", msg, value)
 	return
 }
 

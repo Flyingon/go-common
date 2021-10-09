@@ -17,4 +17,6 @@ func Test_RoundDown(t *testing.T) {
 	assert.Equal(t, d2, 1.0)
 	d3 := RoundDown(0.99999, 2)
 	assert.Equal(t, d3, 0.99)
+	d4 := RoundDown(222828*0.8, 0)
+	assert.Equal(t, d4, 178262)
 }
