@@ -1,9 +1,10 @@
 #!/bin/sh
 tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+tagPrefix=${tag%.*}
 tagVersion=${tag##*.}
 num=$(git rev-list HEAD --count)
 echo "tag: " $tag, "tagVersion: " $tagVersion, "num: " $num
-newTagVersion="v0.1."$[tagVersion+1]
+newTagVersion=$tagPrefix"."$[tagVersion+1]
 echo "new tag: " $newTagVersion
 git tag -a ${newTagVersion} -m ${newTagVersion}
 git push origin ${newTagVersion}
