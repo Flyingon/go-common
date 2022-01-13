@@ -89,3 +89,17 @@ func StrToUnix(format string, timeStr string) (int64, error) {
 	outputArg = tm.Unix()
 	return outputArg, nil
 }
+
+// GetDeltaWeekZeroTs 获取n周前0点时间戳
+func GetDeltaWeekZeroTs(delta int) (ret int64) {
+	now := time.Now()
+
+	offset := int(time.Monday - now.Weekday())
+	if offset > 0 {
+		offset = -6
+	}
+	offset = offset - delta*7
+	fmt.Println("offset: ", offset)
+	weekStart := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, offset).Unix()
+	return weekStart
+}

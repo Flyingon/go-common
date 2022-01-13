@@ -3,6 +3,7 @@ module github.com/Flyingon/go-common
 go 1.14
 
 require (
+	github.com/andreburgaud/crypt2go v0.13.0
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/gomodule/redigo v1.8.4
 	github.com/pkg/errors v0.9.1
