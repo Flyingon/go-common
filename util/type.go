@@ -276,6 +276,45 @@ func InterfaceToInt64(key interface{}) int64 {
 	return ret
 }
 
+// InterfaceToFloat64 ...
+func InterfaceToFloat64(key interface{}) float64 {
+	if key == nil { // nil返回零值，根据需求添加
+		return 0
+	}
+	var ret float64
+	switch key.(type) {
+	case string:
+		tmp, _ := strconv.ParseFloat(key.(string), 64)
+		ret = float64(tmp)
+	case int:
+		ret = float64(key.(int))
+	case int8:
+		ret = float64(key.(int8))
+	case int16:
+		ret = float64(key.(int16))
+	case int32:
+		ret = float64(key.(int32))
+	case int64:
+		ret = float64(key.(int64))
+	case uint:
+		ret = float64(key.(uint))
+	case uint8:
+		ret = float64(key.(uint8))
+	case uint16:
+		ret = float64(key.(uint16))
+	case uint32:
+		ret = float64(key.(uint32))
+	case uint64:
+		ret = float64(key.(uint64))
+	case float32:
+		ret = float64(key.(float32))
+	case float64:
+		ret = key.(float64)
+	default:
+	}
+	return ret
+}
+
 func InterfaceToStrings(key interface{}) []string {
 	var ret []string
 	switch key.(type) {
@@ -298,7 +337,7 @@ func InterfacesToStrings(s []interface{}) []string {
 	return ss
 }
 
-// [1,2,3] => ["1","2","3"]
+// IntsToStrings [1,2,3] => ["1","2","3"]
 func IntsToStrings(s []int) []string {
 	ss := make([]string, 0, len(s))
 	for _, i := range s {
@@ -307,12 +346,12 @@ func IntsToStrings(s []int) []string {
 	return ss
 }
 
-// [1,2,3] => "1,2,3"
+// IntsToString [1,2,3] => "1,2,3"
 func IntsToString(s []int, sep string) string {
 	return strings.Join(IntsToStrings(s), sep)
 }
 
-// "1,2,3" => [1,2,3]
+// StringToInts "1,2,3" => [1,2,3]
 func StringToInts(s string, sep string) []int {
 	arrStr := strings.Split(s, sep)
 	ints := make([]int, 0, len(arrStr))
@@ -322,7 +361,7 @@ func StringToInts(s string, sep string) []int {
 	return ints
 }
 
-//遍历获取[]*Struct,[]Struct,[]map[string]interface 中指定字段
+// BatchGetValues 遍历获取[]*Struct,[]Struct,[]map[string]interface 中指定字段
 func BatchGetValues(t interface{}, key string) []interface{} {
 	var res []interface{}
 	switch reflect.TypeOf(t).Kind() {
@@ -346,7 +385,7 @@ func BatchGetValues(t interface{}, key string) []interface{} {
 	return res
 }
 
-// 顺序插入
+// SortedAppend 顺序插入
 func SortedAppend(ids *[]int, id int) {
 	_, ok := SortedFind(*ids, id)
 	if ok {
@@ -358,7 +397,7 @@ func SortedAppend(ids *[]int, id int) {
 	*ids = sorted
 }
 
-// 顺序
+// SortedRem 顺序
 func SortedRem(ids *[]int, id int) {
 	index, ok := SortedFind(*ids, id)
 	if !ok {
@@ -446,7 +485,7 @@ func InterfaceToUint64(key interface{}) uint64 {
 	return ret
 }
 
-// 设置proto请求里面的默认值
+// SetReqDefault 设置proto请求里面的默认值
 func SetReqDefault(req interface{}, kv map[string]interface{}) {
 	e := reflect.ValueOf(req).Elem()
 	for k, v := range kv {
