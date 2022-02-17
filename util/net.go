@@ -2,7 +2,7 @@ package util
 
 import "net"
 
-// GetLocalIp 获取当前服务器IP
+// GetLocalIP 获取当前服务器IP
 func GetLocalIP() string {
 	addrSlice, err := net.InterfaceAddrs()
 	if nil != err {
