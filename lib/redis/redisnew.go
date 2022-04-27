@@ -94,12 +94,12 @@ func getError(err error) error {
 	return errors.New("1005")
 }
 
-//支持原生操作,注意使用完要conn.Close()
+// Conn 支持原生操作,注意使用完要conn.Close()
 func (p *Pool) Conn(ctx context.Context) (redis.Conn, error) {
 	return p.redisPool.GetContext(ctx)
 }
 
-//string
+// Set string
 func (p *Pool) Set(key string, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
@@ -112,6 +112,7 @@ func (p *Pool) Set(key string, value string) error {
 	return err
 }
 
+// Del ...
 func (p *Pool) Del(keys []string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
@@ -128,9 +129,7 @@ func (p *Pool) Del(keys []string) (int, error) {
 	return rs, nil
 }
 
-/**
- * 第一个参数为是否设置成功，0失败1成功
- */
+//SetNx 第一个参数为是否设置成功，0失败1成功
 func (p *Pool) SetNx(key string, value string) (int, error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
@@ -143,6 +142,7 @@ func (p *Pool) SetNx(key string, value string) (int, error) {
 	return rs, err
 }
 
+// SetEx ...
 func (p *Pool) SetEx(key string, seconds int, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
@@ -155,6 +155,7 @@ func (p *Pool) SetEx(key string, seconds int, value string) error {
 	return err
 }
 
+// PSetEx ....
 func (p *Pool) PSetEx(key string, milliseconds int, value string) error {
 	conn := p.redisPool.Get()
 	defer conn.Close()
@@ -167,7 +168,7 @@ func (p *Pool) PSetEx(key string, milliseconds int, value string) error {
 	return err
 }
 
-//返回OK表示设置成功
+// SetPxNx 返回OK表示设置成功
 //返回""空字符串表示键名已存在
 func (p *Pool) SetPxNx(key string, value string, milliseconds int) (string, error) {
 	conn := p.redisPool.Get()
@@ -186,6 +187,7 @@ func (p *Pool) SetPxNx(key string, value string, milliseconds int) (string, erro
 	return rsStr, err
 }
 
+// Get ...
 func (p *Pool) Get(key string) (value string, err error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
@@ -205,6 +207,7 @@ func (p *Pool) Get(key string) (value string, err error) {
 	return
 }
 
+// GetSet ...
 func (p *Pool) GetSet(key string, value string) (oldValue string, err error) {
 	conn := p.redisPool.Get()
 	defer conn.Close()
