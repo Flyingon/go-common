@@ -2,8 +2,8 @@ package util
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	json "github.com/json-iterator/go"
 	"strings"
 )
 
@@ -39,4 +39,13 @@ func ValueToStr(v interface{}) (ret string) {
 		ret = string(val)
 	}
 	return
+}
+
+// JSONMarshal json序列化，escape设置为false
+func JSONMarshalToString(t interface{}) (string, error) {
+	buffer := &bytes.Buffer{}
+	encoder := json.NewEncoder(buffer)
+	encoder.SetEscapeHTML(false)
+	err := encoder.Encode(t)
+	return string(buffer.Bytes()), err
 }
