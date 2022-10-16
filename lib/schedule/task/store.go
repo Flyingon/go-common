@@ -45,7 +45,7 @@ func (t *Task) Save(ctx context.Context) error {
 	storeData := []interface{}{
 		fieldInfo, info, fieldState, uint32(t.State), fieldRetryTimes, t.RetryTimes,
 	}
-	_, err = redisClient.HSet(ctx, t.storeRedisKey(), storeData...).Result()
+	_, err = redisClient.HMSet(ctx, t.storeRedisKey(), storeData...).Result()
 	if err != nil {
 		return err
 	}
