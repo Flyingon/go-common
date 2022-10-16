@@ -42,12 +42,10 @@ func (t *Task) Save(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	storeData := map[string]interface{}{
-		fieldInfo:       info,
-		fieldState:      uint32(t.State),
-		fieldRetryTimes: t.RetryTimes,
+	storeData := []interface{}{
+		fieldInfo, info, fieldState, uint32(t.State), fieldRetryTimes, t.RetryTimes,
 	}
-	_, err = redisClient.HSet(ctx, t.storeRedisKey(), storeData).Result()
+	_, err = redisClient.HSet(ctx, t.storeRedisKey(), storeData...).Result()
 	if err != nil {
 		return err
 	}
