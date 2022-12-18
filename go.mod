@@ -27,7 +27,8 @@ require (
 	github.com/shopspring/decimal v1.2.0
 	github.com/siddontang/go-log v0.0.0-20190221022429-1e957dd83bed
 	github.com/sirupsen/logrus v1.9.0
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.0
+	go.uber.org/zap v1.24.0
 	golang.org/x/text v0.3.7
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af
 	gotest.tools v2.2.0+incompatible // indirect

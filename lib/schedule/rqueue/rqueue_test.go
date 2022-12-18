@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Flyingon/go-common/lib/schedule/dockertest"
+	"github.com/Flyingon/go-common/lib/dockertest"
 )
 
 var dummyCtx = context.TODO()
