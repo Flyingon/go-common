@@ -146,7 +146,6 @@ func (q *Queue) popByNow(ctx context.Context) []string {
 			}
 			q.popSHA = sha
 		}
-		q.logger.Error("Failed to pop by now", zap.Error(err))
 		time.Sleep(time.Second)
 		return nil
 	}
