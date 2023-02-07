@@ -9,7 +9,7 @@ import (
 	goredis "github.com/go-redis/redis/v8"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Flyingon/go-common/lib/schedule/dockertest"
+	"github.com/Flyingon/go-common/lib/dockertest"
 )
 
 var dummyCtx = context.TODO()
